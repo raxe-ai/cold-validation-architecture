@@ -34,14 +34,16 @@ and separation of duties — applied to AI agents.
 ## Architecture
 
 ```
-┌─────────────┐                        ┌─────────────┐
-│ Claude Code  │ ── artifacts only ──> │  Codex CLI   │
-│  (builder)   │                        │  (reviewer)  │
-│              │ <── structured verdict │              │
-└──────┬───────┘                        └──────────────┘
-       │           ┌───────────────┐
-       └──────────>│  Orchestrator  │
-                   │ gate-review.sh │
+┌───────────────┐                          ┌───────────────┐
+│               │                          │               │
+│  Claude Code  │ ── artifacts only ────>  │   Codex CLI   │
+│   (builder)   │                          │  (reviewer)   │
+│               │ <── structured verdict   │               │
+└───────┬───────┘                          └───────────────┘
+        │
+        │          ┌───────────────┐
+        └────────> │  Orchestrator │
+                   │ gate-review.sh│
                    └───────────────┘
 ```
 
