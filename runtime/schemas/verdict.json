@@ -1,0 +1,80 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict_version": { "type": "string", "const": "2" },
+    "phase": { "type": "string", "enum": ["plan", "implementation"] },
+    "round": { "type": "integer", "minimum": 1 },
+    "decision": {
+      "type": "string",
+      "enum": ["pass", "revise", "stall", "accept_with_risks"]
+    },
+    "confidence": {
+      "type": "number", "minimum": 0, "maximum": 1,
+      "description": "Validator confidence in overall decision"
+    },
+    "summary": { "type": "string" },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "Stable ID: G1, G2..." },
+          "fingerprint": { "type": "string", "description": "phase:class:artifact:short_hash of evidence — for dedup across rounds" },
+          "severity": { "type": "string", "enum": ["warning", "critical"] },
+          "blocking": { "type": "boolean", "description": "true = must fix before shipping" },
+          "class": { "type": "string", "enum": ["requirements", "tests", "security", "correctness", "maintainability"] },
+          "artifact": { "type": "string", "description": "File path or plan section" },
+          "evidence": { "type": "string", "description": "Concrete reason — not opinion" },
+          "evidence_type": { "type": "string", "enum": ["plan_section", "diff", "test_output", "static_reasoning"] },
+          "action": { "type": "string" },
+          "supersedes": { "type": "string", "description": "ID of prior finding this replaces, if any" },
+          "duplicate_of": { "type": "string", "description": "ID of existing finding this duplicates, if any" }
+        },
+        "required": ["id", "fingerprint", "severity", "blocking", "class", "evidence", "evidence_type", "action"]
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "fingerprint": { "type": "string" },
+          "severity": { "type": "string", "enum": ["critical", "warning"] },
+          "blocking": { "type": "boolean" },
+          "class": { "type": "string", "enum": ["correctness", "security", "requirements", "tests"] },
+          "artifact": { "type": "string" },
+          "evidence": { "type": "string" },
+          "evidence_type": { "type": "string", "enum": ["diff", "test_output", "static_reasoning"] },
+          "action": { "type": "string" },
+          "supersedes": { "type": "string" },
+          "duplicate_of": { "type": "string" }
+        },
+        "required": ["id", "fingerprint", "severity", "blocking", "class", "artifact", "evidence", "evidence_type", "action"]
+      }
+    },
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "class": { "type": "string", "enum": ["style", "maintainability", "alternative"] },
+          "artifact": { "type": "string" },
+          "note": { "type": "string" }
+        },
+        "required": ["id", "class", "note"]
+      }
+    },
+    "exit_check": {
+      "type": "object",
+      "properties": {
+        "reopen_loop": { "type": "boolean" },
+        "reason": { "type": "string" },
+        "open_blocking_count": { "type": "integer" }
+      },
+      "required": ["reopen_loop", "reason", "open_blocking_count"]
+    }
+  },
+  "required": ["verdict_version", "phase", "round", "decision", "confidence", "summary", "gaps", "issues", "comments", "exit_check"]
+}

@@ -1,0 +1,12 @@
+{
+  "task_id": "",
+  "created_at": "",
+  "plan_round": 0,
+  "impl_round": 0,
+  "plan_approved": false,
+  "approved_plan_hash": "",
+  "latest_diff_hash": "",
+  "exit_reason": "",
+  "plan_history": [],
+  "impl_history": []
+}
